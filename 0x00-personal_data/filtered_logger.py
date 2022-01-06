@@ -2,7 +2,9 @@
 """log message obfuscated"""
 from typing import List
 import re
+import os
 import logging
+import mysql.connector
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
@@ -36,6 +38,17 @@ def get_logger() -> logging.Logger:
     logging.getLogger('user_data').addHandler(logging.StreamHandler())
     logging.StreamHandler().setFormatter(RedactingFormatter(PII_FIELDS))
     return logging.getLogger('user_data')
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """returns a connector to the database"""
+    username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME")
+    cnx = mysql.connector.connection.MySQLConnection(
+        user=username, password=password, host=host, database=db_name)
+    return cnx
 
 
 def filter_datum(fields: List[str], redaction: str,
