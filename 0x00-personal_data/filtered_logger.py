@@ -58,3 +58,16 @@ def filter_datum(fields: List[str], redaction: str,
         message = re.sub(field + "=.*?" + separator,
                          field + "=" + redaction + separator, message)
     return message
+
+
+def main():
+    """main function that takes no arguments and returns nothing"""
+    cnx = get_db()
+    cnx.cursor().execute("SELECT * FROM users;")
+    fields = [i[0] for i in cnx.cursor().description]
+
+    for row in cnx.cursor():
+        row_ = ''.join(f'{f}={str(r)}; ' for r, f in zip(row, fields))
+        get_logger().info(row_.strip())
+    cnx.cursor().close()
+    cnx.close()
