@@ -16,9 +16,16 @@ def status() -> str:
 
 @app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
 def test_unauthorized():
-    """for testing unauthorized error
+    """ for testing unauthorized error
     """
     abort(401)
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def test_forbidden():
+    """ for testing forbidden
+    """
+    abort(403)
 
 
 @app_views.route('/stats/', strict_slashes=False)
