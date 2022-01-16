@@ -33,7 +33,7 @@ class BasicAuth(Auth):
         try:
             base64.b64encode(base64.b64decode(
                 base64_authorization_header)) == base64_authorization_header
-        except:
+        except BaseException:
             return None
         return base64.b64decode(
             base64_authorization_header + '===').decode('utf-8')
