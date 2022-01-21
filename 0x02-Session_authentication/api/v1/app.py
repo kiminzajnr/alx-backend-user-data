@@ -28,6 +28,7 @@ def before_request():
     """filtering each request
     """
     lst = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+    request.current_user = auth.current_user(request)
     if auth is None:
         return
     if not auth.require_auth(request.path, lst):
